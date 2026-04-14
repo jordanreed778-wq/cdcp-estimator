@@ -1,0 +1,230 @@
+-13
++225
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>CDCP Eligibility Estimator</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canada Dental Care Plan (CDCP) Eligibility & Co-Pay Estimator | Independent Tool</title>
+  <meta name="description" content="Estimate your Canada Dental Care Plan (CDCP) eligibility and co-pay bracket based on age, adjusted family net income, and dental insurance status. Independent estimator — not affiliated with the Government of Canada." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Canada Dental Care Plan (CDCP) Eligibility & Co-Pay Estimator" />
+  <meta property="og:description" content="Check your estimated CDCP eligibility and co-pay bracket instantly. Independent tool — not affiliated with the Government of Canada." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="CDCP Eligibility & Co-Pay Estimator" />
+  <meta name="twitter:description" content="Instantly estimate your Canada Dental Care Plan eligibility and co-pay bracket. Independent tool." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canada: { red: '#D52B1E', dark: '#1A1A2E' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Canada Dental Care Plan (CDCP) Eligibility & Co-Pay Estimator",
+    "url": "https://cdcp-estimator.replit.app/",
+    "description": "An independent tool to estimate your eligibility for the Canada Dental Care Plan (CDCP) and your estimated co-pay bracket, based on age, adjusted family net income, and private dental insurance status.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CAD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Independent Developer"
+    },
+    "keywords": "CDCP, Canada Dental Care Plan, dental insurance, co-pay, eligibility, Canada"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Who is eligible for the Canada Dental Care Plan (CDCP)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You are generally eligible for the CDCP if you do not have access to private dental insurance, your adjusted family net income is under $90,000 CAD, and you meet the age-based rollout criteria. Eligibility began with seniors 87+ in 2023, expanded to seniors 70+, then 65+, then Persons with Disabilities certificate holders, and is progressively rolling out to younger age groups."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the CDCP co-pay brackets?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The CDCP uses three co-pay brackets based on adjusted family net income: 0% co-pay for incomes under $70,000; 40% co-pay for incomes between $70,000 and $79,999; and 60% co-pay for incomes between $80,000 and $89,999. Those with income of $90,000 or more are not eligible."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does having private dental insurance affect my CDCP eligibility?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If you have access to private dental insurance or coverage through an employer, union, or other benefits plan, you are not eligible for the CDCP, regardless of your income or age."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is 'adjusted family net income' for CDCP purposes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Adjusted family net income (AFNI) is the total net income of you and your spouse or common-law partner (if applicable), with certain adjustments. It is calculated based on your most recent tax return and is used by the CRA to determine program eligibility. The CDCP uses this figure to assess your co-pay bracket."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When will the CDCP be available to adults under 65?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The CDCP has been rolling out in phases. Adults aged 18–54 and 55–64 are part of later rollout phases. This estimator reflects publicly available rollout schedule information, but exact dates may be subject to change. Always check Health Canada's official website for the most current information."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this estimator official or affiliated with the Government of Canada?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This is an independent mathematical estimation tool and is not affiliated with, endorsed by, or connected to the Government of Canada, Health Canada, or the Canada Revenue Agency. Results are estimates only. Final eligibility is determined by Health Canada and CRA."
+        }
+      }
+    ]
+  }
+  </script>
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .slider-track {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+      background: linear-gradient(to right, #D52B1E 0%, #D52B1E var(--pct, 0%), #e5e7eb var(--pct, 0%), #e5e7eb 100%);
+    }
+    .slider-track::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #D52B1E;
+      border: 3px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: box-shadow 0.15s;
+    }
+    .slider-track::-webkit-slider-thumb:hover,
+    .slider-track:focus::-webkit-slider-thumb {
+      box-shadow: 0 0 0 4px rgba(213,43,30,0.18);
+    }
+    .slider-track::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #D52B1E;
+      border: 3px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      cursor: pointer;
+    }
+    .fade-in { animation: fadeIn 0.35s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .result-card { transition: all 0.3s ease; }
+    details summary { cursor: pointer; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.2s ease; }
+    a:focus-visible, button:focus-visible, input:focus-visible, [type="radio"]:focus-visible {
+      outline: 2px solid #D52B1E;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-red-50">
+  <!-- Skip nav -->
+  <a href="#estimator" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:text-red-700 focus:font-semibold focus:shadow-md">Skip to estimator</a>
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="text-2xl" role="img" aria-label="Canadian flag">🍁</span>
+        <div class="min-w-0">
+          <span class="font-bold text-slate-900 text-sm sm:text-base leading-tight block truncate">CDCP Estimator</span>
+          <span class="text-xs text-slate-500 hidden sm:block">Independent eligibility tool</span>
+        </div>
+      </div>
+      <nav aria-label="Site navigation">
+        <ul class="flex items-center gap-4 text-sm text-slate-600">
+          <li><a href="#estimator" class="hover:text-red-700 font-medium transition-colors">Estimator</a></li>
+          <li><a href="#faq" class="hover:text-red-700 font-medium transition-colors">FAQ</a></li>
+          <li class="hidden sm:block"><a href="about.html" class="hover:text-red-700 transition-colors">About</a></li>
+          <li class="hidden sm:block"><a href="privacy.html" class="hover:text-red-700 transition-colors">Privacy</a></li>
+          <li class="hidden sm:block"><a href="terms.html" class="hover:text-red-700 transition-colors">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- Top disclaimer banner -->
+  <div class="bg-amber-50 border-b border-amber-200">
+    <div class="max-w-5xl mx-auto px-4 py-2 flex items-start gap-2">
+      <svg class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+      <p class="text-xs text-amber-800 leading-snug"><strong>Independent tool:</strong> This is not affiliated with the Government of Canada. Results are estimates only and not medical or financial advice.</p>
+    </div>
+  </div>
+  <main class="max-w-5xl mx-auto px-4 py-8 sm:py-12">
+    <!-- Hero -->
+    <div class="text-center mb-10">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">
+        Canada Dental Care Plan
+        <span class="block text-canada-red text-xl sm:text-2xl lg:text-3xl mt-1" style="color:#D52B1E;">Eligibility &amp; Co-Pay Estimator</span>
+      </h1>
+      <p class="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">Answer three quick questions to get an instant estimate of your CDCP status and co-pay bracket.</p>
+      <p class="mt-1 text-xs text-slate-400">Last updated: May 2024 &mdash; Estimator logic version 1.0</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start" id="estimator">
+      <!-- Input card -->
+      <div class="lg:col-span-3 bg-white rounded-2xl shadow-md border border-slate-100 p-6 sm:p-8">
+        <h2 class="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:#D52B1E;" aria-hidden="true">?</span>
+          Your Information
+        </h2>
+        <form id="estimatorForm" novalidate>
+          <!-- Age -->
+          <div class="mb-6">
+            <label for="ageInput" class="block text-sm font-semibold text-slate-700 mb-1">
+              Your Age <span class="text-slate-400 font-normal">(years)</span>
+            </label>
+            <p id=...
+[truncated]
+[truncated]
