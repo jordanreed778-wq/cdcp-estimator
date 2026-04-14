@@ -4,6 +4,15 @@
 
 pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
 
+## Artifacts
+
+### CDCP Eligibility Estimator (`artifacts/cdcp-estimator`)
+- **Type**: react-vite (served at `/`)
+- **Description**: Canada Dental Care Plan eligibility & co-pay estimator — single-file static page (`index.html`) served via Vite
+- **Tech**: Tailwind CSS via CDN, vanilla JavaScript (no React used in runtime)
+- **Features**: Age-based rollout logic, income brackets, insurance check, JSON-LD schemas, FAQ, disclaimers, accessible UI
+- **All logic constants** are in a `CONSTANTS` object at the top of the `<script>` tag in `index.html`
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces

@@ -1,0 +1,60 @@
+Generate a complete single-file static website as ONE index.html (no build tools, no backend). Use Tailwind CSS via CDN and vanilla JavaScript in a <script> tag.
+
+Site: "Canada Dental Care Plan (CDCP) Eligibility & Co‑Pay Estimator" (independent estimator).
+Goal: A single-page app calculator that estimates CDCP eligibility + co-pay bracket.
+
+REQUIREMENTS (must all be implemented):
+1) Inputs:
+   - Age (number input, years)
+   - Adjusted Family Net Income (CAD) (use both a range slider and a number input kept in sync)
+   - Private dental insurance? (Yes/No radio or toggle)
+
+2) Outputs (always visible after calculate and update live on input change):
+   - A very clear "Eligible" or "Not Eligible" status message (color-coded).
+   - Estimated co‑pay bracket: 0% / 40% / 60% (only shown when eligible).
+   - A simple explanation paragraph below the result, e.g.:
+     “Based on your age and income, you likely fall into the 40% co‑pay bracket. This is only an estimate.”
+
+3) Logic constraints:
+   - Put ALL thresholds/formulas in a single CONSTANTS object at the very top of the JS.
+   - No backend, no database, no email collection.
+   - Implement basic rollout-by-age using TODAY’S date:
+       * If age is 18–54 and today is before a configurable date, mark Not Eligible yet (rollout).
+       * If age is 55–64 and today is before a configurable date, mark Not Eligible yet (rollout).
+       * Otherwise age is considered okay for this estimator.
+     The rollout dates MUST be inside CONSTANTS and easy to edit.
+   - Implement eligibility logic (also all in CONSTANTS and easy to edit):
+       * If private dental insurance is YES -> Not Eligible.
+       * If adjusted family net income is >= eligibility max -> Not Eligible.
+       * Else Eligible.
+   - Implement co-pay bracket logic (in CONSTANTS):
+       * income < 70,000 => 0%
+       * 70,000–79,999 => 40%
+       * 80,000–89,999 => 60%
+       * >= 90,000 => Not Eligible
+     (Put these bracket edges in CONSTANTS; code should derive the result from those values.)
+
+4) Visible disclaimers (must be clearly visible on the page, not hidden):
+   - “This is an independent mathematical estimation tool, not affiliated with the Government of Canada.”
+   - “Results are estimates only. Final eligibility is determined by Health Canada and CRA.”
+   - “This is not medical or financial advice.”
+
+5) Basic SEO structure:
+   - <title> and a strong meta description.
+   - Internal links in header and footer to: About, Privacy, Terms (files will be about.html, privacy.html, terms.html).
+   - Add a visible FAQ section on the homepage (4–6 Q&As) that matches the estimator.
+   - Embed JSON-LD in index.html:
+       a) WebApplication schema
+       b) FAQPage schema
+     Use <script type="application/ld+json"> blocks. Make the JSON valid.
+
+6) UI/UX:
+   - Clean, friendly, mobile-first layout.
+   - A main card with inputs and a results card.
+   - Add a small “Last updated” line for the estimator logic (static text).
+   - Add a “Reset” button.
+   - No external images required.
+   - Accessibility: proper <label> elements, input min/max, helpful inline hints, and aria-live for the result region.
+
+Deliverable:
+- Output ONLY the full content of index.html in one code block.
