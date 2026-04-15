@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canada Dental Care Plan Estimator - Kingston, ON | Independent Tool</title>
+  <meta name="description" content="Estimate your Canada Dental Care Plan (CDCP) eligibility and co-pay bracket based on age, adjusted family net income, and dental insurance status. Independent estimator — not affiliated with the Government of Canada." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Canada Dental Care Plan (CDCP) Eligibility & Co-Pay Estimator" />
+  <meta property="og:description" content="Check your estimated CDCP eligibility and co-pay bracket instantly. Independent tool — not affiliated with the Government of Canada." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="CDCP Eligibility & Co-Pay Estimator" />
+  <meta name="twitter:description" content="Instantly estimate your Canada Dental Care Plan eligibility and co-pay bracket. Independent tool." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            canada: { red: '#D52B1E', dark: '#1A1A2E' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Canada Dental Care Plan (CDCP) Eligibility & Co-Pay Estimator",
+    "url": "https://cdcp-estimator.replit.app/",
+    "description": "An independent tool to estimate your eligibility for the Canada Dental Care Plan (CDCP) and your estimated co-pay bracket, based on age, adjusted family net income, and private dental insurance status.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CAD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Independent Developer"
+    },
+    "keywords": "CDCP, Canada Dental Care Plan, dental insurance, co-pay, eligibility, Canada"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Who is eligible for the Canada Dental Care Plan (CDCP)?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You are generally eligible for the CDCP if you do not have access to private dental insurance, your adjusted family net income is under $90,000 CAD, and you meet the age-based rollout criteria. Eligibility began with seniors 87+ in 2023, expanded to seniors 70+, then 65+, then Persons with Disabilities certificate holders, and is progressively rolling out to younger age groups."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the CDCP co-pay brackets?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The CDCP uses three co-pay brackets based on adjusted family net income: 0% co-pay for incomes under $70,000; 40% co-pay for incomes between $70,000 and $79,999; and 60% co-pay for incomes between $80,000 and $89,999. Those with income of $90,000 or more are not eligible."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does having private dental insurance affect my CDCP eligibility?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. If you have access to private dental insurance or coverage through an employer, union, or other benefits plan, you are not eligible for the CDCP, regardless of your income or age."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is 'adjusted family net income' for CDCP purposes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Adjusted family net income (AFNI) is the total net income of you and your spouse or common-law partner (if applicable), with certain adjustments. It is calculated based on your most recent tax return and is used by the CRA to determine program eligibility. The CDCP uses this figure to assess your co-pay bracket."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When will the CDCP be available to adults under 65?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The CDCP has been rolling out in phases. Adults aged 18–54 and 55–64 are part of later rollout phases. This estimator reflects publicly available rollout schedule information, but exact dates may be subject to change. Always check Health Canada's official website for the most current information."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this estimator official or affiliated with the Government of Canada?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This is an independent mathematical estimation tool and is not affiliated with, endorsed by, or connected to the Government of Canada, Health Canada, or the Canada Revenue Agency. Results are estimates only. Final eligibility is determined by Health Canada and CRA."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .slider-track {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+      cursor: pointer;
+      background: linear-gradient(to right, #D52B1E 0%, #D52B1E var(--pct, 0%), #e5e7eb var(--pct, 0%), #e5e7eb 100%);
+    }
+    .slider-track::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #D52B1E;
+      border: 3px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      cursor: pointer;
+      transition: box-shadow 0.15s;
+    }
+    .slider-track::-webkit-slider-thumb:hover,
+    .slider-track:focus::-webkit-slider-thumb {
+      box-shadow: 0 0 0 4px rgba(213,43,30,0.18);
+    }
+    .slider-track::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #D52B1E;
+      border: 3px solid white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      cursor: pointer;
+    }
+    .fade-in { animation: fadeIn 0.35s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .result-card { transition: all 0.3s ease; }
+    details summary { cursor: pointer; list-style: none; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .faq-icon { transform: rotate(45deg); }
+    .faq-icon { transition: transform 0.2s ease; }
+    a:focus-visible, button:focus-visible, input:focus-visible, [type="radio"]:focus-visible {
+      outline: 2px solid #D52B1E;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-red-50">
+
+  <!-- Skip nav -->
+  <a href="#estimator" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:rounded focus:text-red-700 focus:font-semibold focus:shadow-md">Skip to estimator</a>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3 min-w-0">
+        <span class="text-2xl" role="img" aria-label="Canadian flag">🍁</span>
+        <div class="min-w-0">
+          <span class="font-bold text-slate-900 text-sm sm:text-base leading-tight block truncate">CDCP Estimator</span>
+          <span class="text-xs text-slate-500 hidden sm:block">Independent eligibility tool</span>
+        </div>
+      </div>
+      <nav aria-label="Site navigation">
+        <ul class="flex items-center gap-4 text-sm text-slate-600">
+          <li><a href="#estimator" class="hover:text-red-700 font-medium transition-colors">Estimator</a></li>
+          <li><a href="#faq" class="hover:text-red-700 font-medium transition-colors">FAQ</a></li>
+          <li class="hidden sm:block"><a href="about.html" class="hover:text-red-700 transition-colors">About</a></li>
+          <li class="hidden sm:block"><a href="privacy.html" class="hover:text-red-700 transition-colors">Privacy</a></li>
+          <li class="hidden sm:block"><a href="terms.html" class="hover:text-red-700 transition-colors">Terms</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Top disclaimer banner -->
+  <div class="bg-amber-50 border-b border-amber-200">
+    <div class="max-w-5xl mx-auto px-4 py-2 flex items-start gap-2">
+      <svg class="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg>
+      <p class="text-xs text-amber-800 leading-snug"><strong>Independent tool:</strong> This is not affiliated with the Government of Canada. Results are estimates only and not medical or financial advice.</p>
+    </div>
+  </div>
+
+  <main class="max-w-5xl mx-auto px-4 py-8 sm:py-12">
+
+    <!-- Hero -->
+    <div class="text-center mb-10">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">Canada Dental Care Plan Estimator - Kingston, ON</h1>
+      <p class="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">Answer three quick questions to get an instant estimate of your CDCP status and co-pay bracket.</p>
+      <p class="mt-1 text-xs text-slate-400">Last updated: May 2024 &mdash; Estimator logic version 1.0</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start" id="estimator">
+
+      <!-- Input card -->
+      <div class="lg:col-span-3 bg-white rounded-2xl shadow-md border border-slate-100 p-6 sm:p-8">
+        <h2 class="text-lg font-semibold text-slate-800 mb-6 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0" style="background:#D52B1E;" aria-hidden="true">?</span>
+          Your Information
+        </h2>
+
+        <form id="estimatorForm" novalidate>
+
+          <!-- Age -->
+          <div class="mb-6">
+            <label for="ageInput" class="block text-sm font-semibold text-slate-700 mb-1">
+              Your Age <span class="text-slate-400 font-normal">(years)</span>
+            </label>
+            <p id="ageHint" class="text-xs text-slate-500 mb-2">Enter your age in whole years.</p>
+            <input
+              type="number"
+              id="ageInput"
+              name="age"
+              min="0"
+              max="120"
+              placeholder="e.g. 62"
+              aria-describedby="ageHint ageError"
+              class="w-full border border-slate-300 rounded-lg px-4 py-2.5 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent transition"
+            />
+            <p id="ageError" class="text-xs text-red-600 mt-1 hidden" role="alert"></p>
+          </div>
+
+          <!-- Income slider + number -->
+          <div class="mb-6">
+            <label for="incomeSlider" class="block text-sm font-semibold text-slate-700 mb-1">
+              Adjusted Family Net Income <span class="text-slate-400 font-normal">(CAD)</span>
+            </label>
+            <p id="incomeHint" class="text-xs text-slate-500 mb-3">Combined net income of you and your spouse/partner as reported to CRA. Move the slider or type a value.</p>
+
+            <div class="flex items-center gap-3 mb-2">
+              <span class="text-xs text-slate-400 whitespace-nowrap">$0</span>
+              <input
+                type="range"
+                id="incomeSlider"
+                min="0"
+                max="120000"
+                step="1000"
+                value="60000"
+                aria-describedby="incomeHint"
+                aria-label="Adjusted family net income slider"
+                class="slider-track flex-1"
+              />
+              <span class="text-xs text-slate-400 whitespace-nowrap">$120k+</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="text-slate-500 text-sm font-medium">$</span>
+              <input
+                type="number"
+                id="incomeNumber"
+                name="income"
+                min="0"
+                max="9999999"
+                step="1"
+                value="60000"
+                aria-label="Adjusted family net income in dollars"
+                aria-describedby="incomeHint"
+                class="w-full border border-slate-300 rounded-lg px-3 py-2 text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent transition"
+              />
+            </div>
+          </div>
+
+          <!-- Private insurance -->
+          <div class="mb-8">
+            <fieldset>
+              <legend class="block text-sm font-semibold text-slate-700 mb-1">Do you have private dental insurance?</legend>
+              <p id="insuranceHint" class="text-xs text-slate-500 mb-3">Includes employer benefits, union plans, or any private plan that covers dental care.</p>
+              <div class="flex gap-4" role="radiogroup" aria-describedby="insuranceHint">
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="insurance"
+                    id="insuranceYes"
+                    value="yes"
+                    class="accent-red-600 w-4 h-4 cursor-pointer"
+                  />
+                  <span class="text-sm text-slate-700 group-hover:text-slate-900 transition-colors font-medium">Yes</span>
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="insurance"
+                    id="insuranceNo"
+                    value="no"
+                    checked
+                    class="accent-red-600 w-4 h-4 cursor-pointer"
+                  />
+                  <span class="text-sm text-slate-700 group-hover:text-slate-900 transition-colors font-medium">No</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              type="submit"
+              class="flex-1 text-white font-semibold text-sm py-3 px-6 rounded-xl transition-all hover:opacity-90 active:scale-95 focus:ring-2 focus:ring-offset-2 focus:ring-red-400 shadow-sm"
+              style="background:#D52B1E;"
+            >
+              Check Eligibility
+            </button>
+            <button
+              type="button"
+              id="resetBtn"
+              class="px-5 py-3 rounded-xl border border-slate-200 text-slate-600 text-sm font-medium hover:bg-slate-50 active:scale-95 transition-all focus:ring-2 focus:ring-offset-2 focus:ring-slate-300"
+              aria-label="Reset all fields"
+            >
+              Reset
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Results card -->
+      <div class="lg:col-span-2 sticky top-24">
+        <div
+          id="resultsCard"
+          class="result-card bg-white rounded-2xl shadow-md border border-slate-100 p-6 sm:p-8 min-h-[220px] flex flex-col justify-center"
+          aria-live="polite"
+          aria-atomic="true"
+          role="region"
+          aria-label="Eligibility result"
+        >
+          <!-- Initial placeholder -->
+          <div id="resultsPlaceholder" class="text-center">
+            <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+              <svg class="w-7 h-7 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <p class="text-slate-500 text-sm">Your result will appear here after you check eligibility.</p>
+          </div>
+
+          <!-- Result content (hidden initially) -->
+          <div id="resultsContent" class="hidden fade-in">
+            <div id="statusBadge" class="flex items-center gap-3 mb-5 p-4 rounded-xl">
+              <div id="statusIcon" class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"></div>
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-wider mb-0.5" id="statusLabel"></p>
+                <p class="font-bold text-lg leading-tight" id="statusText"></p>
+              </div>
+            </div>
+
+            <div id="copaySection" class="hidden mb-5 border-t border-slate-100 pt-4">
+              <p class="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-2">Estimated Co-Pay</p>
+              <div class="flex items-end gap-2">
+                <span class="text-4xl font-extrabold text-slate-900" id="copayValue"></span>
+                <span class="text-slate-500 text-sm mb-1">of treatment cost</span>
+              </div>
+              <div id="copayBar" class="mt-3 h-2.5 rounded-full bg-slate-100 overflow-hidden">
+                <div id="copayBarFill" class="h-full rounded-full transition-all duration-500"></div>
+              </div>
+            </div>
+
+            <p id="resultExplanation" class="text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4"></p>
+          </div>
+        </div>
+
+        <!-- Co-pay legend card -->
+        <div class="mt-4 bg-white rounded-xl border border-slate-100 shadow-sm p-4">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">Co-Pay Brackets</p>
+          <div class="space-y-2">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-600">Under $70,000</span>
+              <span class="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded-full">0% co-pay</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-600">$70,000 – $79,999</span>
+              <span class="font-bold text-yellow-700 bg-yellow-50 px-2 py-0.5 rounded-full">40% co-pay</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-600">$80,000 – $89,999</span>
+              <span class="font-bold text-orange-700 bg-orange-50 px-2 py-0.5 rounded-full">60% co-pay</span>
+            </div>
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-600">$90,000 or more</span>
+              <span class="font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded-full">Not eligible</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Disclaimers -->
+    <div class="mt-10 bg-slate-50 rounded-2xl border border-slate-200 p-6">
+      <h2 class="text-sm font-bold text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/></svg>
+        Important Disclaimers
+      </h2>
+      <ul class="space-y-3">
+        <li class="flex items-start gap-2">
+          <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd"/></svg>
+          <p class="text-sm text-slate-700"><strong>This is an independent mathematical estimation tool, not affiliated with the Government of Canada.</strong></p>
+        </li>
+        <li class="flex items-start gap-2">
+          <svg class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd"/></svg>
+          <p class="text-sm text-slate-700"><strong>Results are estimates only.</strong> Final eligibility is determined by Health Canada and CRA.</p>
+        </li>
+        <li class="flex items-start gap-2">
+          <svg class="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd"/></svg>
+          <p class="text-sm text-slate-700"><strong>This is not medical or financial advice.</strong> Consult a dental professional or Service Canada for personalized guidance.</p>
+        </li>
+      </ul>
+    </div>
+
+    <!-- FAQ -->
+    <section class="mt-10" id="faq">
+      <h2 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm flex-shrink-0" style="background:#D52B1E;" aria-hidden="true">Q</span>
+        Frequently Asked Questions
+      </h2>
+      <div class="space-y-3">
+
+        <details class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden group">
+          <summary class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
+            <span class="text-sm font-semibold text-slate-800 pr-4">Who is eligible for the Canada Dental Care Plan (CDCP)?</span>
+            <svg class="faq-icon w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+            <p>You are generally eligible for the CDCP if you do not have access to private dental insurance, your adjusted family net income is under $90,000 CAD, and you meet the age-based rollout criteria. The plan has been rolling out in phases by age group, starting with seniors 87 and older in late 2023, then expanding to younger groups over time.</p>
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden group">
+          <summary class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
+            <span class="text-sm font-semibold text-slate-800 pr-4">What are the CDCP co-pay brackets?</span>
+            <svg class="faq-icon w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+            <p>The CDCP uses three co-pay brackets based on adjusted family net income:</p>
+            <ul class="mt-2 space-y-1 list-disc list-inside">
+              <li><strong>0% co-pay</strong> for incomes under $70,000</li>
+              <li><strong>40% co-pay</strong> for incomes between $70,000 and $79,999</li>
+              <li><strong>60% co-pay</strong> for incomes between $80,000 and $89,999</li>
+              <li>Not eligible for incomes of $90,000 or more</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden group">
+          <summary class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
+            <span class="text-sm font-semibold text-slate-800 pr-4">Does having private dental insurance affect CDCP eligibility?</span>
+            <svg class="faq-icon w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+            <p>Yes. If you have access to private dental insurance or coverage through an employer, union, or other benefits plan, you are not eligible for the CDCP — regardless of your income or age. "Access" means coverage is available to you, even if you have not enrolled.</p>
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden group">
+          <summary class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
+            <span class="text-sm font-semibold text-slate-800 pr-4">What is "adjusted family net income" for CDCP purposes?</span>
+            <svg class="faq-icon w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+            <p>Adjusted family net income (AFNI) is the combined net income of you and your spouse or common-law partner (if applicable), with certain CRA adjustments. It is based on your most recent tax return. The CDCP uses AFNI to determine your co-pay bracket. If you are unsure of your AFNI, check line 23600 of your Notice of Assessment, then add your spouse/partner's amount.</p>
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden group">
+          <summary class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
+            <span class="text-sm font-semibold text-slate-800 pr-4">When will the CDCP be available to adults under 65?</span>
+            <svg class="faq-icon w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+            <p>The CDCP has been rolling out in phases. Adults aged 55–64 and 18–54 are part of later rollout phases. This estimator reflects publicly available rollout schedule information, but exact dates may change. Always check Health Canada's official website at <strong>canada.ca/dental</strong> for the most current rollout information.</p>
+          </div>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden group">
+          <summary class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 transition-colors">
+            <span class="text-sm font-semibold text-slate-800 pr-4">Is this estimator official or affiliated with the Government of Canada?</span>
+            <svg class="faq-icon w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4">
+            <p><strong>No.</strong> This is an independent mathematical estimation tool and is not affiliated with, endorsed by, or connected to the Government of Canada, Health Canada, or the Canada Revenue Agency. Use this tool as a starting point only. Final eligibility is determined by Health Canada and the CRA through the official application process.</p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 mt-16">
+    <div class="max-w-5xl mx-auto px-4 py-10">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mb-8">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-xl" role="img" aria-label="Canadian flag">🍁</span>
+            <span class="font-bold text-white text-sm">CDCP Estimator</span>
+          </div>
+          <p class="text-xs leading-relaxed">An independent tool to estimate Canada Dental Care Plan eligibility. Not affiliated with the Government of Canada.</p>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">Navigation</p>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#estimator" class="hover:text-white transition-colors">Estimator</a></li>
+            <li><a href="#faq" class="hover:text-white transition-colors">FAQ</a></li>
+            <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-3">Legal</p>
+          <ul class="space-y-2 text-xs">
+            <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-800 pt-6 text-xs space-y-2">
+        <p>This is an independent mathematical estimation tool, not affiliated with the Government of Canada.</p>
+        <p>Results are estimates only. Final eligibility is determined by Health Canada and CRA.</p>
+        <p>This is not medical or financial advice.</p>
+        <p class="mt-4">&copy; 2024 CDCP Estimator &mdash; Independent tool</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // CONSTANTS — Edit all thresholds and rollout dates here
+    // =========================================================================
+    const CONSTANTS = {
+      // Age rollout: if today is BEFORE this date, mark Not Eligible yet for that age band
+      // Set to null to remove a rollout gate (i.e. that age group is now fully eligible)
+      rollout: {
+        // Adults 55–64: rollout date (YYYY, M-1, D)  — Month is 0-indexed in JS Date
+        adults5564: new Date(2024, 3, 1),   // April 1, 2024
+        // Adults 18–54: rollout date
+        adults1854: new Date(2025, 0, 1),   // January 1, 2025
+      },
+
+      // Income eligibility ceiling (at or above = Not Eligible)
+      incomeEligibilityMax: 90000,
+
+      // Co-pay bracket edges (income < edge => that bracket)
+      copayBrackets: [
+        { maxIncome: 70000, copay: 0,   label: '0%',  color: '#16a34a', bgColor: 'rgba(22,163,74,0.08)' },
+        { maxIncome: 80000, copay: 40,  label: '40%', color: '#ca8a04', bgColor: 'rgba(202,138,4,0.08)' },
+        { maxIncome: 90000, copay: 60,  label: '60%', color: '#ea580c', bgColor: 'rgba(234,88,12,0.08)' },
+      ],
+
+      // Age eligibility: minimum age to even qualify (under this = Not Eligible)
+      minEligibleAge: 18,
+    };
+    // =========================================================================
+
+    const TODAY = new Date();
+
+    function getAgeRolloutStatus(age) {
+      if (age < CONSTANTS.minEligibleAge) {
+        return { eligible: false, reason: `The CDCP is for Canadians ${CONSTANTS.minEligibleAge} and older. Children under ${CONSTANTS.minEligibleAge} are not covered by this program.` };
+      }
+      if (age >= 18 && age <= 54) {
+        if (CONSTANTS.rollout.adults1854 && TODAY < CONSTANTS.rollout.adults1854) {
+          return {
+            eligible: false,
+            reason: `Adults aged 18–54 are part of a later rollout phase. Based on the scheduled rollout, this age group is not yet eligible as of today (${TODAY.toLocaleDateString('en-CA')}).`
+          };
+        }
+      }
+      if (age >= 55 && age <= 64) {
+        if (CONSTANTS.rollout.adults5564 && TODAY < CONSTANTS.rollout.adults5564) {
+          return {
+            eligible: false,
+            reason: `Adults aged 55–64 are part of a later rollout phase. Based on the scheduled rollout, this age group is not yet eligible as of today (${TODAY.toLocaleDateString('en-CA')}).`
+          };
+        }
+      }
+      return { eligible: true, reason: null };
+    }
+
+    function getCopayBracket(income) {
+      for (const bracket of CONSTANTS.copayBrackets) {
+        if (income < bracket.maxIncome) return bracket;
+      }
+      return null; // at or above max = not eligible
+    }
+
+    function computeResult(age, income, hasInsurance) {
+      // Rule 1: Private insurance
+      if (hasInsurance) {
+        return {
+          eligible: false,
+          reason: 'not_insurance',
+          explanation: 'You indicated that you have private dental insurance. The CDCP is designed for Canadians without access to private dental coverage. Having any private dental insurance — including through an employer or union — makes you ineligible.',
+          copay: null,
+        };
+      }
+
+      // Rule 2: Income ceiling
+      if (income >= CONSTANTS.incomeEligibilityMax) {
+        return {
+          eligible: false,
+          reason: 'not_income',
+          explanation: `Your adjusted family net income of $${income.toLocaleString('en-CA')} is at or above the $${CONSTANTS.incomeEligibilityMax.toLocaleString('en-CA')} eligibility ceiling. The CDCP is available for incomes under this threshold.`,
+          copay: null,
+        };
+      }
+
+      // Rule 3: Age rollout
+      const rollout = getAgeRolloutStatus(age);
+      if (!rollout.eligible) {
+        return {
+          eligible: false,
+          reason: 'not_rollout',
+          explanation: rollout.reason,
+          copay: null,
+        };
+      }
+
+      // Eligible — determine co-pay bracket
+      const bracket = getCopayBracket(income);
+      if (!bracket) {
+        return {
+          eligible: false,
+          reason: 'not_income',
+          explanation: `Your income exceeds the eligibility threshold.`,
+          copay: null,
+        };
+      }
+
+      const copayDesc = bracket.copay === 0
+        ? 'You would pay $0 out-of-pocket for covered services — the plan covers 100%.'
+        : `You would pay ${bracket.label} of the cost of covered dental services, with the plan covering the rest.`;
+
+      return {
+        eligible: true,
+        reason: 'eligible',
+        explanation: `Based on your age (${age}), income ($${income.toLocaleString('en-CA')}), and insurance status, you likely fall into the ${bracket.label} co-pay bracket. ${copayDesc} This is only an estimate — final eligibility is determined by Health Canada and CRA.`,
+        copay: bracket,
+      };
+    }
+
+    // =========================================================================
+    // UI
+    // =========================================================================
+
+    const ageInput = document.getElementById('ageInput');
+    const incomeSlider = document.getElementById('incomeSlider');
+    const incomeNumber = document.getElementById('incomeNumber');
+    const form = document.getElementById('estimatorForm');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+    const resultsContent = document.getElementById('resultsContent');
+    const statusBadge = document.getElementById('statusBadge');
+    const statusIcon = document.getElementById('statusIcon');
+    const statusLabel = document.getElementById('statusLabel');
+    const statusText = document.getElementById('statusText');
+    const copaySection = document.getElementById('copaySection');
+    const copayValue = document.getElementById('copayValue');
+    const copayBarFill = document.getElementById('copayBarFill');
+    const resultExplanation = document.getElementById('resultExplanation');
+    const ageError = document.getElementById('ageError');
+
+    // Keep slider and number in sync
+    function updateSliderTrack(val, max) {
+      const pct = Math.min(100, Math.max(0, (val / max) * 100));
+      incomeSlider.style.setProperty('--pct', pct + '%');
+    }
+
+    incomeSlider.addEventListener('input', () => {
+      const val = parseInt(incomeSlider.value, 10);
+      incomeNumber.value = val;
+      updateSliderTrack(val, parseInt(incomeSlider.max, 10));
+      triggerLiveUpdate();
+    });
+
+    incomeNumber.addEventListener('input', () => {
+      const val = parseInt(incomeNumber.value, 10) || 0;
+      const clamped = Math.min(120000, Math.max(0, val));
+      incomeSlider.value = clamped;
+      updateSliderTrack(clamped, parseInt(incomeSlider.max, 10));
+      triggerLiveUpdate();
+    });
+
+    ageInput.addEventListener('input', triggerLiveUpdate);
+
+    document.querySelectorAll('input[name="insurance"]').forEach(r => {
+      r.addEventListener('change', triggerLiveUpdate);
+    });
+
+    let liveUpdateTimeout;
+    function triggerLiveUpdate() {
+      clearTimeout(liveUpdateTimeout);
+      liveUpdateTimeout = setTimeout(() => {
+        if (resultsContent.classList.contains('hidden')) return; // only update if already shown
+        showResult();
+      }, 200);
+    }
+
+    function showResult() {
+      const age = parseInt(ageInput.value, 10);
+      const income = parseInt(incomeNumber.value, 10) || 0;
+      const hasInsurance = document.querySelector('input[name="insurance"]:checked')?.value === 'yes';
+
+      // Validate age
+      if (!ageInput.value || isNaN(age) || age < 0 || age > 120) {
+        ageError.textContent = 'Please enter a valid age between 0 and 120.';
+        ageError.classList.remove('hidden');
+        ageInput.setAttribute('aria-invalid', 'true');
+        return;
+      }
+      ageError.classList.add('hidden');
+      ageInput.removeAttribute('aria-invalid');
+
+      const result = computeResult(age, income, hasInsurance);
+
+      // Swap placeholder for content
+      resultsPlaceholder.classList.add('hidden');
+      resultsContent.classList.remove('hidden');
+      resultsContent.classList.remove('fade-in');
+      void resultsContent.offsetWidth; // reflow to re-trigger animation
+      resultsContent.classList.add('fade-in');
+
+      if (result.eligible) {
+        // Eligible
+        statusBadge.className = 'flex items-center gap-3 mb-5 p-4 rounded-xl bg-green-50 border border-green-200';
+        statusIcon.className = 'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-green-500';
+        statusIcon.innerHTML = '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
+        statusLabel.textContent = 'Eligibility Status';
+        statusLabel.className = 'text-xs font-semibold uppercase tracking-wider mb-0.5 text-green-700';
+        statusText.textContent = 'Likely Eligible';
+        statusText.className = 'font-bold text-lg leading-tight text-green-800';
+
+        // Co-pay
+        copaySection.classList.remove('hidden');
+        copayValue.textContent = result.copay.label;
+        copayValue.style.color = result.copay.color;
+        const pct = result.copay.copay;
+        copayBarFill.style.width = (pct === 0 ? 100 : pct) + '%';
+        copayBarFill.style.backgroundColor = result.copay.color;
+        copayBarFill.style.opacity = pct === 0 ? '0.3' : '1';
+      } else {
+        // Not Eligible
+        statusBadge.className = 'flex items-center gap-3 mb-5 p-4 rounded-xl bg-red-50 border border-red-200';
+        statusIcon.className = 'w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 bg-red-500';
+        statusIcon.innerHTML = '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>';
+        statusLabel.textContent = 'Eligibility Status';
+        statusLabel.className = 'text-xs font-semibold uppercase tracking-wider mb-0.5 text-red-700';
+        statusText.textContent = 'Not Eligible';
+        statusText.className = 'font-bold text-lg leading-tight text-red-800';
+
+        copaySection.classList.add('hidden');
+      }
+
+      resultExplanation.textContent = result.explanation;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showResult();
+    });
+
+    resetBtn.addEventListener('click', () => {
+      ageInput.value = '';
+      incomeSlider.value = 60000;
+      incomeNumber.value = 60000;
+      updateSliderTrack(60000, 120000);
+      document.getElementById('insuranceNo').checked = true;
+      ageError.classList.add('hidden');
+      ageInput.removeAttribute('aria-invalid');
+      resultsPlaceholder.classList.remove('hidden');
+      resultsContent.classList.add('hidden');
+    });
+
+    // Init slider track
+    updateSliderTrack(60000, 120000);
+  </script>
+
+</body>
+</html>
