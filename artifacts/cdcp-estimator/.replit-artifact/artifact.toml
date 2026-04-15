@@ -22,10 +22,6 @@ build = [ "pnpm", "--filter", "@workspace/cdcp-estimator", "run", "build" ]
 publicDir = "artifacts/cdcp-estimator/dist/public"
 serve = "static"
 
-[[services.production.rewrites]]
-from = "/*"
-to = "/index.html"
-
 [services.env]
 PORT = "22324"
 BASE_PATH = "/"

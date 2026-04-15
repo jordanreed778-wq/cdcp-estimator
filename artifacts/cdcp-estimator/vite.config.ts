@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import { readdirSync } from "fs";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 const rawPort = process.env.PORT;
@@ -25,6 +26,18 @@ if (!basePath) {
     "BASE_PATH environment variable is required but was not provided.",
   );
 }
+
+const root = path.resolve(import.meta.dirname);
+
+// Build all city pages in l/ as separate HTML entry points
+const cityEntries = Object.fromEntries(
+  readdirSync(path.resolve(root, "l"))
+    .filter((f) => f.endsWith(".html"))
+    .map((f) => [
+      `l/${f.replace(".html", "")}`,
+      path.resolve(root, "l", f),
+    ]),
+);
 
 export default defineConfig({
   base: basePath,
@@ -53,10 +66,16 @@ export default defineConfig({
     },
     dedupe: ["react", "react-dom"],
   },
-  root: path.resolve(import.meta.dirname),
+  root,
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: path.resolve(root, "index.html"),
+        ...cityEntries,
+      },
+    },
   },
   server: {
     port,
