@@ -172,7 +172,7 @@
         <span class="text-2xl" role="img" aria-label="Canadian flag">🍁</span>
         <div class="min-w-0">
           <span class="font-bold text-slate-900 text-sm sm:text-base leading-tight block truncate">CDCP Estimator</span>
-          <span class="text-xs text-slate-500 hidden sm:block">Independent eligibility tool</span>
+          <span class="text-xs text-slate-500 hidden sm:block">Independent eligibility tool &mdash; Last Updated: April 15, 2026</span>
         </div>
       </a>
       <nav aria-label="Site navigation">
@@ -201,7 +201,7 @@
     <div class="text-center mb-10">
       <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight">Canada Dental Care Plan Estimator - Greater Sudbury, ON</h1>
       <p class="mt-3 text-slate-600 text-sm sm:text-base max-w-xl mx-auto">Answer three quick questions to get an instant estimate of your CDCP status and co-pay bracket.</p>
-      <p class="mt-1 text-xs text-slate-400">Last updated: May 2024 &mdash; Estimator logic version 1.0</p>
+      <p class="mt-1 text-xs text-slate-400">Last Updated: April 15, 2026 &mdash; Estimator logic version 2.0</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start" id="estimator">
@@ -366,6 +366,12 @@
             </div>
 
             <p id="resultExplanation" class="text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4"></p>
+            <div id="dentalRatesBtn" class="hidden mt-4">
+              <a href="https://www.sunlife.ca/en/insurance/dental-insurance/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl font-semibold text-sm text-white transition-all hover:opacity-90 active:scale-95 shadow-sm" style="background:#D52B1E;">
+                View 2026 Private Dental Rates
+                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -527,7 +533,7 @@
         <p>This is an independent mathematical estimation tool, not affiliated with the Government of Canada.</p>
         <p>Results are estimates only. Final eligibility is determined by Health Canada and CRA.</p>
         <p>This is not medical or financial advice.</p>
-        <p class="mt-4">&copy; 2024 CDCP Estimator &mdash; Independent tool</p>
+        <p class="mt-4">&copy; 2026 CDCP Estimator &mdash; Independent tool &mdash; Last Updated: April 15, 2026</p>
       </div>
     </div>
   </footer>
@@ -667,6 +673,7 @@
     const copayValue = document.getElementById('copayValue');
     const copayBarFill = document.getElementById('copayBarFill');
     const resultExplanation = document.getElementById('resultExplanation');
+    const dentalRatesBtn = document.getElementById('dentalRatesBtn');
     const ageError = document.getElementById('ageError');
 
     // Keep slider and number in sync
@@ -741,6 +748,7 @@
 
         // Co-pay
         copaySection.classList.remove('hidden');
+        dentalRatesBtn.classList.add('hidden');
         copayValue.textContent = result.copay.label;
         copayValue.style.color = result.copay.color;
         const pct = result.copay.copay;
@@ -758,6 +766,7 @@
         statusText.className = 'font-bold text-lg leading-tight text-red-800';
 
         copaySection.classList.add('hidden');
+        dentalRatesBtn.classList.remove('hidden');
       }
 
       resultExplanation.textContent = result.explanation;
