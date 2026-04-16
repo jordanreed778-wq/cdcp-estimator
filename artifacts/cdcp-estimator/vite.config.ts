@@ -27,9 +27,10 @@ if (!basePath) {
   );
 }
 
-const root = path.resolve(import.meta.dirname);
+// Root is the workspace root — HTML files live there now
+const root = path.resolve(import.meta.dirname, "..", "..");
 
-// Build all city pages in l/ as separate HTML entry points
+// Dynamically discover all city pages under /l/
 const cityEntries = Object.fromEntries(
   readdirSync(path.resolve(root, "l"))
     .filter((f) => f.endsWith(".html"))
@@ -82,7 +83,7 @@ export default defineConfig({
     host: "0.0.0.0",
     allowedHosts: true,
     fs: {
-      strict: true,
+      strict: false,
       deny: ["**/.*"],
     },
   },
