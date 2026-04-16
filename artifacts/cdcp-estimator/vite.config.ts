@@ -74,6 +74,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(root, "index.html"),
+        about: path.resolve(root, "about.html"),
+        privacy: path.resolve(root, "privacy.html"),
+        terms: path.resolve(root, "terms.html"),
         ...cityEntries,
       },
     },
